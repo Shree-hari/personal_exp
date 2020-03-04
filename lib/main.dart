@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/widgets/new_transaction.dart';
 import 'models/transaction.dart';
@@ -67,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ).toList();
   }
 
+  bool _showChart = false;
+
   void _addNewTransaction(
       String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
@@ -124,14 +127,24 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Show Chart'),
+                Switch(value: _showChart,onChanged: (val){
+                  setState(() {
+                    _showChart = val;
+                  });
+                },)
+              ],
+            ),
+            _showChart ? Container(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.3,
-              width: double.infinity,
               child: Chart(_recentTransactions),
-            ),
+            ):
             Container(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
